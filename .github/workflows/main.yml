@@ -31,18 +31,3 @@ jobs:
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
             echo "Azure resource group created"
           fi
-
-  
-    - uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.ResourceGroupName }}
-        template: azuredeploy.json
-        parameters: azuredeploy.parameters.json
-        
-##    - uses: azure/arm-deploy@v1
-#      with:
-#        resourceGroupName: ${{ env.ResourceGroupName }}
-#        template: apache2-on-ubuntu-vm/azuredeploy.json
-#        parameters: apache2-on-ubuntu-vm/azuredeploy.parameters.json  
-
- 
