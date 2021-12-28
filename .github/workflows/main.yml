@@ -17,17 +17,6 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-          if $(az group exists --name ${{ env.ResourceGroupName }}) ; then
-            echo "Azure resource group already exists, skipping creation..."
-          else
-            az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
-            echo "Azure resource group created"
-          fi
-          if $(az ad sp list --display-name ${{env.appName}}) ; then
-            echo "SP already exists, skipping creation..."
-          else
-            az ad app create --display-name $appName --homepage http://${{env.appName}}/  --identifier-uris localhost
-            scope=$(az group list --query "[?contains(name, ${{env.resourceGroupName}})].id" -o tsv)
-            az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
-            echo "Azure resource group created"
-          fi
+          appName="sp-static"
+          az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
+          az ad sp create-for-rbac --name $appName --role Owner --scopes "hub_and_spoke-rg" --sdk-auth
