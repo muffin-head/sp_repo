@@ -23,11 +23,11 @@ jobs:
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
             echo "Azure resource group created"
           fi
-          # if $(az ad sp exists --name ${{ env.appName }}) ; then
-          #  echo "SP already exists, skipping creation..."
-          # else
-           # az ad app create --display-name $appName --homepage http://localhost/  --identifier-uris localhost
-           # scope="hub_and_spoke-rg"
-           # az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
-           # echo "Azure resource group created"
-          # fi
+          if $(az ad sp exists --name ${{ env.appName }}) ; then
+            echo "SP already exists, skipping creation..."
+          else
+            az ad app create --display-name $appName --homepage http://localhost/  --identifier-uris localhost
+            scope="hub_and_spoke-rg"
+            az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
+            echo "Azure resource group created"
+          fi
