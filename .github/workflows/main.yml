@@ -26,8 +26,8 @@ jobs:
           if $(az ad sp list --display-name ${{env.appName}}) ; then
             echo "SP already exists, skipping creation..."
           else
-            az ad app create --display-name $appName --homepage http://${{appName}}/  --identifier-uris localhost
-            scope=$(az group list --query "[?contains(name, '$resourceGroupName')].id" -o tsv)
+            az ad app create --display-name $appName --homepage http://${{env.appName}}/  --identifier-uris localhost
+            scope=$(az group list --query "[?contains(name, ${{env.resourceGroupName}})].id" -o tsv)
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
             echo "Azure resource group created"
           fi
