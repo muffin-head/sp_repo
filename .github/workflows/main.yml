@@ -5,7 +5,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      ResourceGroupName: hub_and_spoke-rg
+      ResourceGroupName: hub_and_spoke-rg   
       ResourceGroupLocation: "eastus"
       appName: "SP_ops_mng"
     steps:
@@ -23,11 +23,11 @@ jobs:
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
             echo "Azure resource group created"
           fi
-          if $(az ad sp exists --name ${{ env.appName }}) ; then
+          if $(az ad sp list --display-name ${{env.appName}}) ; then
             echo "SP already exists, skipping creation..."
           else
-            az ad app create --display-name $appName --homepage http://localhost/  --identifier-uris localhost
-            scope="hub_and_spoke-rg"
+            az ad app create --display-name $appName --homepage http://${{appName}}/  --identifier-uris localhost
+            scope=$(az group list --query "[?contains(name, '$resourceGroupName')].id" -o tsv)
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
             echo "Azure resource group created"
           fi
