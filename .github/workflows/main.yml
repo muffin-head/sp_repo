@@ -5,7 +5,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      ResourceGroupName: hub_and_spoke-rg   
+      ResourceGroupName: hub_and_spoke-rg  
+      scope: $(az group list --query "[?contains(name, '$resourceGroupName')].id" -o tsv)
       ResourceGroupLocation: "eastus"
       appName: "SP_ops_mng"
     steps:
@@ -21,4 +22,4 @@ jobs:
           appName="sp-static"
           
           az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
-          az ad sp create-for-rbac --name $appName --role Owner --scopes "hub_and_spoke-rg" --sdk-auth
+          az ad sp create-for-rbac --name $appName --role Owner --scopes $scope --sdk-auth
