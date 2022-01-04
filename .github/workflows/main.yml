@@ -18,9 +18,8 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-          az login --service-principal --username "sp-IAC" --tenant "70c4ae00-7045-4dcd-8ab9-d51de447cd9f" --password "55cb4a5b-f39f-444b-9725-2ebc2f2b7c5e"
           az account set --subscription c816fc53-8793-456b-8701-58f27b52a2ba
           appName="sp-static"
           
           az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
-          az ad sp create-for-rbac --name $appName --role Owner --scopes $scope --sdk-auth
+         
