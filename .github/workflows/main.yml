@@ -17,6 +17,8 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
+          az account set --subscription c816fc53-8793-456b-8701-58f27b52a2ba
           appName="sp-static"
+          
           az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
           az ad sp create-for-rbac --name $appName --role Owner --scopes "hub_and_spoke-rg" --sdk-auth
