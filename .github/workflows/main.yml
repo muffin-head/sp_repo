@@ -16,7 +16,7 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-          subs="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+          subs=63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
           az account set --subscription $subs
           if $(az group exists --name ${{ env.ResourceGroupName }}) ; then
             echo "Azure resource group already exists, skipping creation..."
