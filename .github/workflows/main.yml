@@ -16,50 +16,49 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-            az account set --subscription "63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
-            az ad app create --display-name test1sp --homepage http://test1sp --identifier-uris test1sp
-
+          
+            appName="sp-static"
+            scope="/subscriptions/103ab456-30f8-4509-a52a-e51f91841961/resourceGroups/$ResourceGroupName"
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
-          #!/bin/bash
-            
-          
-            scope="/subscriptions/$Subscriptions/resourceGroups/${{env.ResourceGroupName}}"
-          
-            
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash               
-            Subscriptions=63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
+          #!/bin/bash 
+ 
+            az account set --subscription 103ab456-30f8-4509-a52a-e51f91841961
+            az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
-          #!/bin/bash   
-     
+          #!/bin/bash            
             #Keyvault Paremeters
-            KeyVaultName="tanmay29"
+            KeyVaultName="databrickkeyvaultnad7124"
             RGName="test1sp-rg"
-            
+            Subscriptions="103ab456-30f8-4509-a52a-e51f91841961"
             Location="EastUS"
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
-          #!/bin/bash
-    
+          #!/bin/bash            
             az keyvault create --name $KeyVaultName --resource-group $RGName --location $Location --enable-rbac-authorization true
-            az role assignment create --role "Key Vault Secrets Officer" --assignee "1f4177ae-31c6-4a0b-8751-de33273fd420" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
-            az role assignment create --role "Key Vault Administrator" --assignee "1f4177ae-31c6-4a0b-8751-de33273fd420" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
-
+            az role assignment create --role "Key Vault Secrets Officer" --assignee "29052559-66e6-457c-b06e-21834f985045" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
+            az role assignment create --role "Key Vault Administrator" --assignee "29052559-66e6-457c-b06e-21834f985045" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
             
             az keyvault update --name $KeyVaultName --resource-group $RGName --enabled-for-deployment "true"
             az keyvault update --name $KeyVaultName --resource-group $RGName --enabled-for-template-deployment "true"
-            
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash            
             appName="sp-static"
             SP=$(az ad app list --display-name $appName --query '[].appId' -o tsv)
             az role assignment create --role "Key Vault Secrets Officer" --assignee $SP --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
             
             #az keyvault set-policy -n $KeyVaultName --key-permissions get list --spn $appName
         
+            
+          fi
