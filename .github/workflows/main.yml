@@ -1,5 +1,5 @@
 on: [push]
-name: AzureARMSP
+name: AzureARMSPs
 
 jobs:
   build-and-deploy:
@@ -19,16 +19,33 @@ jobs:
           if $(az group exists --name ${{ env.ResourceGroupName }}) ; then
             echo "Azure resource group already exists, skipping creation..."
             appName="sp-static"
-            scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
-            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
+            subs="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+            scope="/subscriptions/$subs/resourceGroups/$ResourceGroupName"
+            az account set --subscription $subs
             az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
+            
+            #Keyvault Paremeters
+            KeyVaultName="databrickkeyvaultnad7124"
+            RGName="test-rg"
+            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+            Location="EastUS"
+            
+            
+            az keyvault create --name $KeyVaultName --resource-group $RGName --location $Location --enable-rbac-authorization true
+            az role assignment create --role "Key Vault Secrets Officer" --assignee "c477ac33-dede-4859-8211-7762f926aac3" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
+            az role assignment create --role "Key Vault Administrator" --assignee "c477ac33-dede-4859-8211-7762f926aac3" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
+
+            
+            az keyvault update --name $KeyVaultName --resource-group $RGName --enabled-for-deployment "true"
+            az keyvault update --name $KeyVaultName --resource-group $RGName --enabled-for-template-deployment "true"
+            
+            appName="sp-static"
+            SP=$(az ad app list --display-name $appName --query '[].appId' -o tsv)
+            az role assignment create --role "Key Vault Secrets Officer" --assignee $SP --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
+            
+            #az keyvault set-policy -n $KeyVaultName --key-permissions get list --spn $appName
           else
             az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
             echo "Azure resource group created"
-            appName="sp-static"
-            scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
-            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
-            az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
-            az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
           fi
