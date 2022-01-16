@@ -20,7 +20,7 @@ jobs:
             echo "Azure resource group already exists, skipping creation..."
             appName="sp-static"
             scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
-            az account set --subscription c816fc53-8793-456b-8701-58f27b52a2ba
+            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
             az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
           else
@@ -28,7 +28,7 @@ jobs:
             echo "Azure resource group created"
             appName="sp-static"
             scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
-            az account set --subscription c816fc53-8793-456b-8701-58f27b52a2ba
+            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
             az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
           fi
