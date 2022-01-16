@@ -17,16 +17,15 @@ jobs:
         inlineScript: |
           #!/bin/bash
             az account set --subscription "63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
-            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash
-            
-            appName="sp-static"
+            Subscriptions=63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
+            appName="test1sp"
             scope="/subscriptions/$Subscriptions/resourceGroups/${{env.ResourceGroupName}}"
           
-            az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
+            az ad app create --display-name $appName --homepage http://test1sp/  --identifier-uris test1sp
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
     - uses: Azure/CLI@v1
       with:
