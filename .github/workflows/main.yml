@@ -18,13 +18,13 @@ jobs:
           #!/bin/bash
           
             appName="sp-static"
-            scope="/subscriptions/103ab456-30f8-4509-a52a-e51f91841961/resourceGroups/$ResourceGroupName"
+            scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
           #!/bin/bash 
  
-            az account set --subscription 103ab456-30f8-4509-a52a-e51f91841961
+            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
             az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
     - uses: Azure/CLI@v1
@@ -34,7 +34,7 @@ jobs:
             #Keyvault Paremeters
             KeyVaultName="databrickkeyvaultnad7124"
             RGName="test1sp-rg"
-            Subscriptions="103ab456-30f8-4509-a52a-e51f91841961"
+            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
             Location="EastUS"
     - uses: Azure/CLI@v1
       with:
