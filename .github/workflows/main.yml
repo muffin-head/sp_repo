@@ -24,18 +24,18 @@ jobs:
           #!/bin/bash
             
             appName="sp-static"
-            scope="/subscriptions/$Subscriptions/resourceGroups/$ResourceGroupName"
-            az account set --subscription $Subscriptions
+            scope="/subscriptions/$Subscriptions/resourceGroups/${{env.ResourceGroupName}}
+          
             az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
-          #!/bin/bash 
+          #!/bin/bash   
      
             #Keyvault Paremeters
             KeyVaultName="tanmay2"
-            RGName="test2-rg"
+            RGName="test1sp-rg"
             
             Location="EastUS"
     - uses: Azure/CLI@v1
