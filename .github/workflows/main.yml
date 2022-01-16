@@ -19,20 +19,31 @@ jobs:
             az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
             Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
             az group create --name ${{env.ResourceGroupName}} --location ${{env.ResourceGroupLocation}}
-
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
             
             appName="sp-static"
             scope="/subscriptions/$Subscriptions/resourceGroups/$ResourceGroupName"
             az account set --subscription $Subscriptions
             az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
-            
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash 
+     
             #Keyvault Paremeters
             KeyVaultName="tanmay2"
             RGName="test2-rg"
             
             Location="EastUS"
-            
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+    
             az keyvault create --name $KeyVaultName --resource-group $RGName --location $Location --enable-rbac-authorization true
             az role assignment create --role "Key Vault Secrets Officer" --assignee "ebee88d3-cf54-4d95-b9ea-afa33dc1c6b4" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
             az role assignment create --role "Key Vault Administrator" --assignee "ebee88d3-cf54-4d95-b9ea-afa33dc1c6b4" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
