@@ -19,7 +19,7 @@ jobs:
           
           az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
 
-          if $(az group exists --name ${{ env.ResourceGroupName }}) ; then
+            $(az group exists --name ${{ env.ResourceGroupName }}) ; then
             echo "Azure resource group already exists, skipping creation..."
             appName="sp-static"
             scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
@@ -28,7 +28,7 @@ jobs:
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
             
             #Keyvault Paremeters
-            KeyVaultName="databrickkeyvaultnad7124"
+            KeyVaultName="tanmay2598"
             RGName="test1-rg"
             Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
             Location="EastUS"
@@ -46,7 +46,5 @@ jobs:
             az role assignment create --role "Key Vault Secrets Officer" --assignee $SP --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
             
             #az keyvault set-policy -n $KeyVaultName --key-permissions get list --spn $appName
-          else
-            az group create --name ${{ env.ResourceGroupName }} --location ${{ env.ResourceGroupLocation }}
-            echo "Azure resource group created"
+          
           fi
