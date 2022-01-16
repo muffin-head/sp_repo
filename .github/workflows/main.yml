@@ -17,6 +17,8 @@ jobs:
         inlineScript: |
           #!/bin/bash
             az account set --subscription "63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+            az ad app create --display-name test1sp --homepage http://test1sp --identifier-uris test1sp
+
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
@@ -25,7 +27,6 @@ jobs:
           
             scope="/subscriptions/$Subscriptions/resourceGroups/${{env.ResourceGroupName}}"
           
-            $(az ad app create --display-name test1sp --homepage http://test1sp --identifier-uris test1sp)
             
     - uses: Azure/CLI@v1
       with:
