@@ -16,11 +16,10 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-          
-          az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
+            az group create --name $ResourceGroupName --location $ResourceGroupLocation
+            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
 
-            $(az group exists --name ${{ env.ResourceGroupName }}) ; then
-            echo "Azure resource group already exists, skipping creation..."
+           
             appName="sp-static"
             scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
             az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
