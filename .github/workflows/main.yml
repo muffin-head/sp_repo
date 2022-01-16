@@ -16,8 +16,9 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-            az group create --name $ResourceGroupName --location $ResourceGroupLocation
             az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
+
+            az group create --name $ResourceGroupName --location $ResourceGroupLocation
 
            
             appName="sp-static"
