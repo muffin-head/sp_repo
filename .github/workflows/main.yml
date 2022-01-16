@@ -18,7 +18,7 @@ jobs:
           #!/bin/bash
             az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
             Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
-            az group create --name $ResourceGroupName --location $ResourceGroupLocation
+            az group create --name ${{env.ResourceGroupName}} --location ${{env.ResourceGroupLocation}}
 
             
             appName="sp-static"
