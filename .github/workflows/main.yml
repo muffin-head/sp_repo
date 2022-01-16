@@ -34,7 +34,7 @@ jobs:
           #!/bin/bash   
      
             #Keyvault Paremeters
-            KeyVaultName="tanmay2"
+            KeyVaultName="tanmay29"
             RGName="test1sp-rg"
             
             Location="EastUS"
@@ -44,8 +44,8 @@ jobs:
           #!/bin/bash
     
             az keyvault create --name $KeyVaultName --resource-group $RGName --location $Location --enable-rbac-authorization true
-            az role assignment create --role "Key Vault Secrets Officer" --assignee "ebee88d3-cf54-4d95-b9ea-afa33dc1c6b4" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
-            az role assignment create --role "Key Vault Administrator" --assignee "ebee88d3-cf54-4d95-b9ea-afa33dc1c6b4" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
+            az role assignment create --role "Key Vault Secrets Officer" --assignee "1f4177ae-31c6-4a0b-8751-de33273fd420" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
+            az role assignment create --role "Key Vault Administrator" --assignee "1f4177ae-31c6-4a0b-8751-de33273fd420" --scope "/subscriptions/$Subscriptions/resourcegroups/$RGName/providers/Microsoft.KeyVault/vaults/$KeyVaultName"
 
             
             az keyvault update --name $KeyVaultName --resource-group $RGName --enabled-for-deployment "true"
