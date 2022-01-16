@@ -27,8 +27,8 @@ jobs:
             
             #Keyvault Paremeters
             KeyVaultName="databrickkeyvaultnad7124"
-            RGName="test-rg"
-            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+            RGName="test1"
+            Subscriptions=$subs
             Location="EastUS"
             
             
