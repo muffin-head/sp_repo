@@ -17,20 +17,20 @@ jobs:
         inlineScript: |
           #!/bin/bash
             az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
-
+            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
             az group create --name $ResourceGroupName --location $ResourceGroupLocation
 
-           
+            
             appName="sp-static"
-            scope="/subscriptions/63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3/resourceGroups/$ResourceGroupName"
-            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
+            scope="/subscriptions/$Subscriptions/resourceGroups/$ResourceGroupName"
+            az account set --subscription $Subscriptions
             az ad app create --display-name $appName --homepage http://sp-static/  --identifier-uris sp-static
             az ad sp create-for-rbac --name $appName --role Contributor --scopes $scope --sdk-auth
             
             #Keyvault Paremeters
-            KeyVaultName="tanmay2598"
+            KeyVaultName="tanmay2"
             RGName="test2-rg"
-            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+            
             Location="EastUS"
             
             az keyvault create --name $KeyVaultName --resource-group $RGName --location $Location --enable-rbac-authorization true
