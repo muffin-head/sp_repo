@@ -5,7 +5,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      ResourceGroupName: test2-rg
+      ResourceGroupName: test1sp-rg
       ResourceGroupLocation: "eastus"
     steps:
     - uses: actions/checkout@master
@@ -16,9 +16,8 @@ jobs:
       with:
         inlineScript: |
           #!/bin/bash
-            az account set --subscription 63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
-            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3
-            az group create --name ${{env.ResourceGroupName}} --location ${{env.ResourceGroupLocation}}
+            az account set --subscription "63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
+            Subscriptions="63c2f8f9-a3f8-4cbf-aaeb-341fc75caaa3"
     - uses: Azure/CLI@v1
       with:
         inlineScript: |
